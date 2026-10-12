@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scooby Dooby Shop - Mystery Scoops & Special Deals</title>
+  <style>
+    :root {
+      --pink-primary: #ff6b95;
+      --pink-soft: #ffe4e8;
+      --pink-dark: #d81b60;
+      --purple-accent: #9c27b0;
+      --bg-gradient: linear-gradient(135deg, #fff5f7 0%, #f3e5f5 100%);
+      --card-bg: #ffffff;
+      --text-color: #333333;
+      --subtext-color: #666666;
+      --header-bg: rgba(255, 255, 255, 0.95);
+      --border-color: #f0f0f0;
+      --modal-bg: #ffffff;
+    }
+
+    body.dark-mode {
+      --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1b2e 100%);
+      --card-bg: #1e1e24;
+      --text-color: #f1f1f1;
+      --subtext-color: #b3b3b3;
+      --header-bg: rgba(30, 30, 36, 0.95);
+      --border-color: #2d2d38;
+      --pink-soft: #2d1b28;
+      --modal-bg: #24242c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--header-bg);
+      backdrop-filter: blur(10px);
+      padding: 10px 20px;
+      border-bottom: 2px solid var(--pink-soft);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      user-select: none;
+    }
+
+    .header-title:hover {
+      transform: scale(1.02);
+    }
+
+    .brand-svg-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(255, 107, 149, 0.25);
+    }
+
+    .header-title h1 {
+      color: var(--pink-primary);
+      font-size: 1.4rem;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .header-title p {
+      font-size: 0.72rem;
+      color: var(--purple-accent);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle-btn {
+      background: var(--card-bg);
+      color: var(--text-color);
+      border: 1.5px solid var(--pink-primary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .user-btn-header {
+      background: var(--card-bg);
+      color: var(--pink-dark);
+      border: 1.5px solid var(--pink-primary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .track-btn-header {
+      background: var(--card-bg);
+      color: var(--purple-accent);
+      border: 1px solid var(--purple-accent);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .cart-btn-header {
+      background: var(--pink-primary);
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+    }
+
+    .cart-count-badge {
+      background: white;
+      color: var(--pink-dark);
+      border-radius: 50%;
+      padding: 2px 7px;
+      font-size: 0.75rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 15px;
+      flex: 1;
+    }
+
+    .vip-banner {
+      background: linear-gradient(135deg, #ff6b95 0%, #d81b60 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(255, 107, 149, 0.25);
+      margin-bottom: 25px;
+    }
+
+    .vip-banner h2 {
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .vip-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 15px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .step-number {
+      background: var(--pink-primary);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .trust-badges {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .badge-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--pink-soft);
+      border-radius: 12px;
+      padding: 12px 15px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .badge-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--pink-dark);
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 30px 0 20px;
+      color: var(--text-color);
+      font-size: 1.5rem;
+    }
+
+    .deals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .deal-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid var(--pink-soft);
+      box-shadow: 0 6px 15px rgba(255, 107, 149, 0.12);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .deal-badge-tag {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: #d81b60;
+      color: white;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-radius: 12px;
+      z-index: 2;
+    }
+
+    .deal-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      background: var(--card-bg);
+      padding: 10px;
+    }
+
+    .deal-body {
+      padding: 15px;
+    }
+
+    .deal-body h4 {
+      color: var(--pink-dark);
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .deal-body p {
+      font-size: 0.85rem;
+      color: var(--subtext-color);
+      margin-bottom: 10px;
+    }
+
+    .scoop-tiers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 20px;
+      border: 2px solid var(--border-color);
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--pink-primary);
+    }
+
+    .card h3 {
+      color: var(--pink-primary);
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .card .price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--purple-accent);
+      margin: 10px 0;
+    }
+
+    .card ul {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--subtext-color);
+      margin-bottom: 15px;
+      text-align: center;
+      padding: 0 5px;
+    }
+
+    .card ul li {
+      margin-bottom: 8px;
+    }
+
+    .action-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 15px;
+      position: relative;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      background: var(--card-bg);
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    .price-box {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .sale-price {
+      color: var(--purple-accent);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .discount-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--pink-primary);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 8px;
+    }
+
+    .btn {
+      background: var(--pink-primary);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--pink-dark);
+    }
+
+    .btn-buy-now {
+      background: #25D366;
+    }
+
+    .btn-buy-now:hover {
+      background: #1eb855;
+    }
+
+    .btn-submit-website {
+      background: linear-gradient(135deg, #ff6b95 0%, #d81b60 100%);
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      padding: 12px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 2500;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--modal-bg);
+      color: var(--text-color);
+      padding: 25px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .cart-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 2500;
+      justify-content: flex-end;
+    }
+
+    .cart-content {
+      background: var(--modal-bg);
+      color: var(--text-color);
+      width: 100%;
+      max-width: 420px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--pink-soft);
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .cart-items-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--pink-soft);
+      padding: 10px 12px;
+      border-radius: 10px;
+    }
+
+    .cart-item-info h5 {
+      color: var(--pink-dark);
+      font-size: 0.95rem;
+    }
+
+    .cart-item-info p {
+      font-size: 0.85rem;
+      color: var(--subtext-color);
+    }
+
+    .cart-qty-btn {
+      background: var(--card-bg);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      padding: 2px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .cart-total-box {
+      border-top: 2px solid var(--pink-soft);
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    .promo-input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .promo-input-group input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-color);
+      border-radius: 8px;
+      outline: none;
+      font-size: 0.85rem;
+    }
+
+    .order-form {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      border: 1px solid var(--border-color);
+    }
+
+    .order-form h3 {
+      color: var(--pink-primary);
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-color);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .manage-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--pink-soft);
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .manage-item-row span {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .manage-btn-group {
+      display: flex;
+      gap: 5px;
+    }
+
+    .manage-btn {
+      border: none;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-shipped { background: #d1ecf1; color: #0c5460; }
+    .status-delivered { background: #d4edda; color: #155724; }
+
+    .tab-btn-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid var(--pink-primary);
+      background: var(--card-bg);
+      color: var(--pink-dark);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .tab-btn.active {
+      background: var(--pink-primary);
+      color: white;
+    }
+
+    /* FLOATING BUTTONS WRAPPER FOR CHATBOT & WHATSAPP */
+    .floating-buttons-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 1000;
+      align-items: center;
+    }
+
+    .floating-btn-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+    }
+
+    .floating-btn-icon:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+
+    .whatsapp-float {
+      background: #25D366;
+      color: white;
+    }
+
+    .ai-chat-float {
+      background: #ff6b95;
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 15px;
+      background: var(--header-bg);
+      border-top: 1px solid var(--pink-soft);
+      font-size: 0.85rem;
+      color: var(--subtext-color);
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-svg-logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(255, 107, 149, 0.2);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .footer-svg-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .admin-link {
+      color: #bbb;
+      text-decoration: none;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-title" onclick="openLogoModal()">
+      <svg class="brand-svg-logo" viewBox="0 0 400 400">
+        <circle cx="200" cy="200" r="190" fill="#ffffff" stroke="#ff6b95" stroke-width="8"/>
+        <circle cx="200" cy="200" r="175" fill="none" stroke="#80cbc4" stroke-width="4"/>
+        <path d="M200,150 C200,130 170,110 150,135 C130,165 170,195 200,215 C230,195 270,165 250,135 C230,110 200,130 200,150 Z" fill="#ff6b95"/>
+        <text x="200" y="270" font-family="'Segoe UI', Arial, sans-serif" font-size="34" font-weight="bold" fill="#880e4f" text-anchor="middle">Scooby Dooby</text>
+        <text x="200" y="300" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" fill="#ab47bc" text-anchor="middle">MYSTERY SCOOPS &amp; CHARMS</text>
+      </svg>
+
+      <div>
+        <h1>Scooby Dooby</h1>
+        <p>MYSTERY SCOOPS &amp; CHARMS</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+      </button>
+      <button class="user-btn-header" onclick="toggleAuthModal()">
+        👤 <span id="headerUserBtnText">Login / Account</span>
+      </button>
+      <button class="track-btn-header" onclick="toggleTrackModal()">
+        🚚 Track Order
+      </button>
+      <button class="cart-btn-header" onclick="toggleCart()">
+        🛒 Cart <span class="cart-count-badge" id="cartCountBadge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- REFERRAL PROGRAM BANNER -->
+    <div class="vip-banner">
+      <h2>🌸 Refer & Earn $1 (PKR 300) 🌸</h2>
+      <p>Invite friends to create an account & buy a product. You get <strong>$1 (PKR 300) Reward</strong> on their purchase!</p>
+      
+      <div style="margin-top: 15px;">
+        <button class="btn" style="width: auto; padding: 10px 25px; background: #fff; color: var(--pink-dark);" onclick="toggleAuthModal()">
+          ✨ GET YOUR REFERRAL CODE ✨
+        </button>
+      </div>
+
+      <div class="vip-steps">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div>
+            <strong>INVITE A FRIEND</strong>
+            <div style="font-size: 0.8rem; color: var(--subtext-color);">Share your Referral Code</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div>
+            <strong>THEY BUY A PRODUCT</strong>
+            <div style="font-size: 0.8rem; color: var(--subtext-color);">They create account & order</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div>
+            <strong>YOU EARN $1 (PKR 300)</strong>
+            <div style="font-size: 0.8rem; color: var(--subtext-color);">Reward added to your account</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Badges Section -->
+    <div class="trust-badges">
+      <div class="badge-card">
+        <span style="font-size:1.5rem">🚚</span>
+        <span class="badge-text">Pakistan Wide Shipping</span>
+      </div>
+      <div class="badge-card">
+        <span style="font-size:1.5rem">📦</span>
+        <span class="badge-text">Cash On Delivery (COD)</span>
+      </div>
+      <div class="badge-card">
+        <span style="font-size:1.5rem">🛍️</span>
+        <span class="badge-text">100+ Happy Customers</span>
+      </div>
+      <div class="badge-card">
+        <span style="font-size:1.5rem">💌</span>
+        <span class="badge-text">Freebie Gift Included</span>
+      </div>
+    </div>
+
+    <!-- SPECIAL HOT DEALS SECTION -->
+    <div id="deals-wrapper" style="display: none;">
+      <h2 class="section-title">🔥 Special Deals & Bundles</h2>
+      <div class="deals-grid" id="deals-container"></div>
+    </div>
+
+    <h2 class="section-title">Select Your Scoop Tier</h2>
+
+    <div class="scoop-tiers">
+      <div class="card">
+        <div>
+          <h3>🎀 Mini Scoop</h3>
+          <div class="price">PKR 499</div>
+          <ul>
+            <li>✨ 1 Scoop</li>
+            <li>🎁 5 to 6 Mystery Items</li>
+            <li>🌸 Cute Surprises Included</li>
+          </ul>
+        </div>
+        <div class="action-btn-group">
+          <button class="btn btn-buy-now" onclick="buyNow('Mini Scoop', 499)">⚡ Buy Now</button>
+          <button class="btn" onclick="addToCart('Mini Scoop', 499)">🛒 Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>💖 Super Scoop</h3>
+          <div class="price">PKR 899</div>
+          <ul>
+            <li>✨ 2 Scoops</li>
+            <li>🎁 10 to 12 Mystery Items</li>
+            <li>🎉 Freebie Pack Included</li>
+          </ul>
+        </div>
+        <div class="action-btn-group">
+          <button class="btn btn-buy-now" onclick="buyNow('Super Scoop', 899)">⚡ Buy Now</button>
+          <button class="btn" onclick="addToCart('Super Scoop', 899)">🛒 Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>🌟 Sooper Dooper Scoop</h3>
+          <div class="price">PKR 1,299</div>
+          <ul>
+            <li>✨ 3 Scoops</li>
+            <li>🎁 15 to 16 Mystery Items</li>
+            <li>💖 Guaranteed Goodie Gift</li>
+          </ul>
+        </div>
+        <div class="action-btn-group">
+          <button class="btn btn-buy-now" onclick="buyNow('Sooper Dooper Scoop', 1299)">⚡ Buy Now</button>
+          <button class="btn" onclick="addToCart('Sooper Dooper Scoop', 1299)">🛒 Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>⭐ Mega Surprise Scoop</h3>
+          <div class="price">PKR 1,699</div>
+          <ul>
+            <li>✨ 4 Mega Scoops</li>
+            <li>🎁 20+ Mystery Items</li>
+            <li>🎉 Special Jumbo Surprise</li>
+          </ul>
+        </div>
+        <div class="action-btn-group">
+          <button class="btn btn-buy-now" onclick="buyNow('Mega Surprise Scoop', 1699)">⚡ Buy Now</button>
+          <button class="btn" onclick="addToCart('Mega Surprise Scoop', 1699)">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="custom-products-wrapper" style="display: none;">
+      <h2 class="section-title">Special Featured Items</h2>
+      <div class="products-grid" id="products-container"></div>
+    </div>
+
+    <!-- ORDER FORM SECTION WITH DIRECT WEBSITE SUBMIT -->
+    <div class="order-form" id="form-section">
+      <h3>🛒 Delivery Details & Checkout</h3>
+      
+      <div class="form-group">
+        <label>Your Name:</label>
+        <input type="text" id="userName" placeholder="Enter your full name">
+      </div>
+
+      <div class="form-group">
+        <label>Phone / WhatsApp Number:</label>
+        <input type="text" id="userPhone" placeholder="03XXXXXXXXX">
+      </div>
+
+      <div class="form-group">
+        <label>Referral Code (Optional - If someone invited you):</label>
+        <input type="text" id="appliedRefCode" placeholder="Enter Inviter's Code (e.g. SCOOBY-123)">
+      </div>
+
+      <div class="form-group">
+        <label>Full Delivery Address:</label>
+        <textarea id="userAddress" rows="3" placeholder="Enter complete address with city name"></textarea>
+      </div>
+
+      <button class="btn btn-submit-website" onclick="submitOrderOnWebsite()">🎉 Submit Order Directly on Website</button>
+      <button class="btn" style="background: #25D366; font-size: 0.95rem;" onclick="sendCartToWhatsApp()">📲 Or Complete Order via WhatsApp</button>
+    </div>
+
+  </div>
+
+  <!-- CUSTOMER LOGIN & ACCOUNT DASHBOARD MODAL -->
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      
+      <!-- LOGGED OUT VIEW (LOGIN / REGISTER TABS) -->
+      <div id="authFormsWrapper">
+        <div class="tab-btn-group">
+          <button class="tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">🔑 Login</button>
+          <button class="tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">✨ Create Account</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div id="loginBox">
+          <h4 style="color: var(--pink-dark); text-align: center; margin-bottom: 12px;">Welcome Back!</h4>
+          <div class="form-group">
+            <label>Phone Number:</label>
+            <input type="text" id="loginPhone" placeholder="03XXXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label>Password:</label>
+            <input type="password" id="loginPass" placeholder="Enter your password">
+          </div>
+          <button class="btn" onclick="handleLogin()">Login to Account</button>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div id="registerBox" style="display: none;">
+          <h4 style="color: var(--pink-dark); text-align: center; margin-bottom: 12px;">Create Scooby Account</h4>
+          <div class="form-group">
+            <label>Full Name:</label>
+            <input type="text" id="regName" placeholder="Enter your name">
+          </div>
+          <div class="form-group">
+            <label>Phone Number:</label>
+            <input type="text" id="regPhone" placeholder="03XXXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label>Set Password:</label>
+            <input type="password" id="regPass" placeholder="Create password">
+          </div>
+          <button class="btn" onclick="handleRegister()">Sign Up & Get $1 Code</button>
+        </div>
+      </div>
+
+      <!-- LOGGED IN USER DASHBOARD -->
+      <div id="userDashboardWrapper" style="display: none; text-align: center;">
+        <h3 style="color: var(--pink-dark); margin-bottom: 5px;" id="dashWelcomeTitle">Welcome, Customer!</h3>
+        <p style="font-size: 0.8rem; color: var(--subtext-color); margin-bottom: 15px;" id="dashPhoneText">Phone: 03000000000</p>
+
+        <div style="background: var(--pink-soft); padding: 12px; border-radius: 12px; margin-bottom: 12px;">
+          <div style="font-size: 0.8rem; color: var(--subtext-color);">Your Unique Referral Code:</div>
+          <div style="font-size: 1.2rem; font-weight: bold; color: var(--pink-dark); margin: 3px 0;" id="userRefCodeDisplay">SCOOBY-000</div>
+          <div style="font-size: 0.72rem; color: var(--subtext-color);">Share code with friends! When they order, you earn PKR 300 ($1).</div>
+        </div>
+
+        <div style="background: var(--pink-soft); padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: left;">
+          <div style="font-size: 0.8rem; color: var(--text-color); font-weight: bold;">Earned Rewards:</div>
+          <div style="font-size: 1.1rem; color: var(--purple-accent); font-weight: bold;" id="userRewardsDisplay">PKR 0 Balance</div>
+        </div>
+
+        <!-- USER ORDER HISTORY -->
+        <div style="text-align: left; margin-bottom: 15px;">
+          <h4 style="font-size: 0.9rem; color: var(--text-color); margin-bottom: 8px;">📦 Your Recent Orders & Live Status:</h4>
+          <div id="userOrdersList" style="max-height: 150px; overflow-y: auto;">
+            <p style="font-size: 0.8rem; color: var(--subtext-color);">No order history found.</p>
+          </div>
+        </div>
+
+        <button class="btn" style="background: #d81b60;" onclick="handleLogout()">Log Out Account</button>
+      </div>
+
+      <button class="btn" style="background: #888; margin-top: 10px;" onclick="toggleAuthModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- ORDER TRACKING MODAL FOR CUSTOMERS -->
+  <div class="modal" id="trackModal">
+    <div class="modal-content">
+      <h3 style="color: var(--pink-dark); margin-bottom: 15px; text-align: center;">🚚 Track Your Order</h3>
+      <p style="font-size: 0.85rem; color: var(--subtext-color); text-align: center; margin-bottom: 15px;">
+        Enter your <strong>Order ID</strong> (e.g. SCOOBY-ORD-1234) or <strong>Phone Number</strong> to check your order status:
+      </p>
+      
+      <div class="form-group">
+        <input type="text" id="trackQueryInput" placeholder="Order ID or Phone Number">
+      </div>
+      <button class="btn" onclick="searchOrderStatus()" style="margin-bottom: 15px;">🔍 Check Status</button>
+
+      <div id="trackResultBox" style="display: none; background: var(--pink-soft); padding: 15px; border-radius: 12px; font-size: 0.85rem;">
+      </div>
+
+      <button class="btn" style="background: #888; margin-top: 15px;" onclick="toggleTrackModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- ORDER SUCCESS CONFIRMATION MODAL -->
+  <div class="modal" id="orderSuccessModal">
+    <div class="modal-content" style="text-align: center;">
+      <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+      <h3 style="color: var(--pink-dark); margin-bottom: 10px;">Order Placed Successfully!</h3>
+      <p style="font-size: 0.9rem; color: var(--subtext-color); margin-bottom: 15px;">Thank you for shopping with <strong>Scooby Dooby Shop</strong>!</p>
+      
+      <div style="background: var(--pink-soft); padding: 15px; border-radius: 12px; text-align: left; font-size: 0.85rem; color: var(--text-color); margin-bottom: 15px;" id="orderSuccessDetails">
+      </div>
+
+      <button class="btn" onclick="closeOrderSuccessModal()">Done / Close</button>
+    </div>
+  </div>
+
+  <!-- CLEAN LOGO POPUP MODAL -->
+  <div class="modal" id="logoViewModal">
+    <div class="modal-content" style="text-align: center; padding: 20px;">
+      <div style="margin: 15px 0; display: flex; justify-content: center;">
+        <svg id="previewModalSvg" style="width: 270px; height: 270px; border-radius: 50%; box-shadow: 0 8px 25px rgba(255, 107, 149, 0.3);" viewBox="0 0 400 400">
+          <circle cx="200" cy="200" r="190" fill="#ffffff" stroke="#ff6b95" stroke-width="8"/>
+          <circle cx="200" cy="200" r="175" fill="none" stroke="#80cbc4" stroke-width="4"/>
+          <path d="M200,150 C200,130 170,110 150,135 C130,165 170,195 200,215 C230,195 270,165 250,135 C230,110 200,130 200,150 Z" fill="#ff6b95"/>
+          <text x="200" y="270" font-family="'Segoe UI', Arial, sans-serif" font-size="34" font-weight="bold" fill="#880e4f" text-anchor="middle">Scooby Dooby</text>
+          <text x="200" y="300" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" fill="#ab47bc" text-anchor="middle">MYSTERY SCOOPS &amp; CHARMS</text>
+        </svg>
+      </div>
+      <button class="btn" style="background: #888; margin-top: 10px;" onclick="closeLogoModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- CART MODAL DRAWER -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h3 style="color: var(--pink-dark);">🛍️ Your Shopping Cart</h3>
+        <button onclick="toggleCart()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color);">✕</button>
+      </div>
+
+      <div class="cart-items-list" id="cartItemsList"></div>
+
+      <div class="cart-total-box">
+        <div class="promo-input-group">
+          <input type="text" id="promoCodeInput" placeholder="Promo Code (e.g. SCOOBY10)">
+          <button class="btn" style="width: auto; padding: 8px 15px; font-size: 0.85rem;" onclick="applyPromoCode()">Apply</button>
+        </div>
+        <div id="promoMessage" style="font-size: 0.8rem; margin-bottom: 10px; display: none;"></div>
+
+        <div id="vipRewardCartBox" style="display: none; background: var(--pink-soft); padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+          <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--pink-dark); font-weight: bold;">
+            <input type="checkbox" id="useVipBonusCheck" onchange="updateCartUI()">
+            👑 Redeem Earned Rewards
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px; color: var(--subtext-color);">
+          <span>Subtotal:</span>
+          <span id="cartSubtotal">PKR 0</span>
+        </div>
+        <div id="discountRow" style="display: none; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px; color: #25D366; font-weight: bold;">
+          <span>Promo Discount:</span>
+          <span id="cartDiscount">-PKR 0</span>
+        </div>
+        <div id="vipRewardRow" style="display: none; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px; color: var(--pink-dark); font-weight: bold;">
+          <span>Rewards Used:</span>
+          <span id="vipRewardAmount">-PKR 0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; margin-top: 10px; border-top: 1px dashed var(--border-color); padding-top: 8px;">
+          <span>Total PKR:</span>
+          <span id="cartTotalPrice" style="color: var(--purple-accent);">PKR 0</span>
+        </div>
+
+        <button class="btn" style="margin-top: 15px;" onclick="toggleCart(); document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING BUTTONS CONTAINER (AI CHAT & WHATSAPP) -->
+  <div class="floating-buttons-container">
+    <!-- AI CHAT BOT BUTTON -->
+    <div class="floating-btn-icon ai-chat-float" onclick="toggleChat()" title="Scooby AI Assistant">
+      🤖
+    </div>
+    
+    <!-- WHATSAPP DIRECT BUTTON -->
+    <a href="https://wa.me/923401585669?text=Hello%20Scooby%20Dooby%20Shop!%20I%20have%20a%20query%20regarding%20my%20order/products." target="_blank" class="floating-btn-icon whatsapp-float" title="Contact on WhatsApp">
+      💬
+    </a>
+  </div>
+
+  <!-- AI Chat Box -->
+  <div id="ai-chat-box" style="display: none; position: fixed; bottom: 150px; right: 20px; width: 310px; height: 400px; background: var(--modal-bg); border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); flex-direction: column; overflow: hidden; z-index: 1000; border: 2px solid var(--pink-soft);">
+    <div style="background: #ff6b95; color: white; padding: 15px; font-weight: bold; text-align: center; font-size: 1rem;">
+      🌸 Scooby Assistant AI 🌸
+    </div>
+    <div id="chat-messages" style="flex: 1; padding: 12px; overflow-y: auto; font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px;">
+      <div style="background: var(--pink-soft); color: var(--text-color); padding: 10px 12px; border-radius: 12px; align-self: flex-start; max-width: 85%;">
+        Hello! Main Scooby AI Assistant hu. Aap Deals ya Products ke baare me koi bhi sawal pooch sakti hain! 💕
+      </div>
+    </div>
+    <div style="padding: 10px; border-top: 1px solid var(--border-color); display: flex; gap: 5px; background: var(--modal-bg);">
+      <input type="text" id="chat-input" placeholder="Poochhein (e.g. Deals, Delivery)..." style="flex: 1; padding: 8px 12px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); border-radius: 20px; outline: none; font-size: 0.85rem;">
+      <button onclick="askAI()" style="background: #ff6b95; color: white; border: none; padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: bold;">Send</button>
+    </div>
+  </div>
+
+  <!-- SECRET ADMIN MODAL (For Owner Only) -->
+  <div class="modal" id="adminModal">
+    <div class="modal-content">
+      <h3 style="color: var(--pink-dark); margin-bottom: 15px; text-align: center;">👑 Owner Management Panel</h3>
+      
+      <!-- Upload Single Product -->
+      <div style="border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;">
+        <h4 style="color: var(--purple-accent); font-size: 0.95rem; margin-bottom: 8px;">➕ Add Single Product:</h4>
+        <div class="form-group">
+          <label style="font-size:0.8rem; color:var(--subtext-color);">Select Photo from Gallery:</label>
+          <input type="file" id="pImgFile" accept="image/*">
+        </div>
+        <div class="form-group">
+          <input type="text" id="pName" placeholder="Product Name">
+        </div>
+        <div class="form-group">
+          <input type="text" id="pOldPrice" placeholder="Original Price (e.g. 300) - Cut line">
+        </div>
+        <div class="form-group">
+          <input type="text" id="pPrice" placeholder="Discounted Sale Price (e.g. 250)">
+        </div>
+        <button class="btn" onclick="addNewProductFromFile()">Add Product from Gallery</button>
+      </div>
+
+      <!-- Upload Special Deal -->
+      <div style="border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;">
+        <h4 style="color: var(--pink-dark); font-size: 0.95rem; margin-bottom: 8px;">🔥 Add Special Deal Bundle:</h4>
+        <div class="form-group">
+          <input type="text" id="dTitle" placeholder="Deal Title (e.g. Weekend Combo)">
+        </div>
+        <div class="form-group">
+          <input type="text" id="dDesc" placeholder="Description (e.g. 2 Scoops + Free Lip Gloss)">
+        </div>
+        <div class="form-group">
+          <input type="text" id="dOldPrice" placeholder="Original Price (e.g. 1500) - Optional">
+        </div>
+        <div class="form-group">
+          <input type="text" id="dPrice" placeholder="Deal Sale Price (e.g. 1200)">
+        </div>
+        <div class="form-group">
+          <label style="font-size:0.8rem; color:var(--subtext-color);">Select Deal Photo from Gallery:</label>
+          <input type="file" id="dImgFile" accept="image/*">
+        </div>
+        <button class="btn" style="background: #d81b60;" onclick="addNewDealFromFile()">Add Special Deal from Gallery</button>
+      </div>
+
+      <!-- VIEW PLACED WEBSITE ORDERS & UPDATE STATUS -->
+      <div style="border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;">
+        <h4 style="color: var(--pink-dark); font-size: 0.95rem; margin-bottom: 8px;">📦 Placed Website Orders & Status Update:</h4>
+        <div id="placedOrdersList" style="max-height: 220px; overflow-y: auto;">
+          <p style="font-size:0.8rem; color:var(--subtext-color);">No website orders received yet.</p>
+        </div>
+      </div>
+
+      <!-- EDIT / MANAGE EXISTING ITEMS SECTION -->
+      <div>
+        <h4 style="color: var(--text-color); font-size: 0.95rem; margin-bottom: 10px;">✏️ Manage / Edit Live Products & Deals:</h4>
+        <div id="manageItemsList">
+          <p style="font-size:0.8rem; color:var(--subtext-color);">No uploaded items found yet.</p>
+        </div>
+      </div>
+
+      <button class="btn" style="background: #888; margin-top: 15px;" onclick="closeAdmin()">Close</button>
+    </div>
+  </div>
+
+  <footer>
+    <svg class="footer-svg-logo" viewBox="0 0 400 400" onclick="openLogoModal()">
+      <circle cx="200" cy="200" r="190" fill="#ffffff" stroke="#ff6b95" stroke-width="8"/>
+      <circle cx="200" cy="200" r="175" fill="none" stroke="#80cbc4" stroke-width="4"/>
+      <path d="M200,150 C200,130 170,110 150,135 C130,165 170,195 200,215 C230,195 270,165 250,135 C230,110 200,130 200,150 Z" fill="#ff6b95"/>
+      <text x="200" y="270" font-family="'Segoe UI', Arial, sans-serif" font-size="34" font-weight="bold" fill="#880e4f" text-anchor="middle">Scooby Dooby</text>
+      <text x="200" y="300" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" fill="#ab47bc" text-anchor="middle">MYSTERY SCOOPS &amp; CHARMS</text>
+    </svg>
+    <p>© Scooby Dooby Shop • All Rights Reserved</p>
+    <span class="admin-link" onclick="openAdmin()">🔑 Owner Login</span>
+  </footer>
+
+  <script>
+    const whatsappNumber = "923401585669";
+    const adminPass = "scooby123";
+
+    let cart = [];
+    let discountPercent = 0;
+    let loggedInUser = JSON.parse(localStorage.getItem('scooby_active_user') || 'null');
+
+    // DARK / LIGHT MODE LOGIC
+    function initTheme() {
+      const savedTheme = localStorage.getItem('scooby_theme') || 'light';
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeIcon').innerText = '☀️';
+        document.getElementById('themeText').innerText = 'Light';
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.getElementById('themeIcon').innerText = '🌙';
+        document.getElementById('themeText').innerText = 'Dark';
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      if (isDark) {
+        localStorage.setItem('scooby_theme', 'dark');
+        document.getElementById('themeIcon').innerText = '☀️';
+        document.getElementById('themeText').innerText = 'Light';
+      } else {
+        localStorage.setItem('scooby_theme', 'light');
+        document.getElementById('themeIcon').innerText = '🌙';
+        document.getElementById('themeText').innerText = 'Dark';
+      }
+    }
+
+    function openLogoModal() {
+      document.getElementById('logoViewModal').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeLogoModal() {
+      document.getElementById('logoViewModal').style.display = 'none';
+    }
+
+    function toggleTrackModal() {
+      const modal = document.getElementById('trackModal');
+      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function toggleAuthModal() {
+      const modal = document.getElementById('authModal');
+      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function switchAuthTab(tab) {
+      const loginBox = document.getElementById('loginBox');
+      const regBox = document.getElementById('registerBox');
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabRegBtn = document.getElementById('tabRegisterBtn');
+
+      if (tab === 'login') {
+        loginBox.style.display = 'block';
+        regBox.style.display = 'none';
+        tabLoginBtn.classList.add('active');
+        tabRegBtn.classList.remove('active');
+      } else {
+        loginBox.style.display = 'none';
+        regBox.style.display = 'block';
+        tabLoginBtn.classList.remove('active');
+        tabRegBtn.classList.add('active');
+      }
+    }
+
+    function initUserSession() {
+      const headerBtn = document.getElementById('headerUserBtnText');
+      const formsWrapper = document.getElementById('authFormsWrapper');
+      const dashWrapper = document.getElementById('userDashboardWrapper');
+
+      if (loggedInUser) {
+        headerBtn.innerText = loggedInUser.name.split(' ')[0];
+        formsWrapper.style.display = 'none';
+        dashWrapper.style.display = 'block';
+
+        document.getElementById('dashWelcomeTitle').innerText = `Welcome, ${loggedInUser.name}! 👑`;
+        document.getElementById('dashPhoneText').innerText = `Phone: ${loggedInUser.phone}`;
+        document.getElementById('userRefCodeDisplay').innerText = loggedInUser.refCode;
+        document.getElementById('userRewardsDisplay').innerText = `PKR ${loggedInUser.rewards || 0} Balance`;
+
+        if (loggedInUser.rewards > 0) {
+          document.getElementById('vipRewardCartBox').style.display = 'block';
+        } else {
+          document.getElementById('vipRewardCartBox').style.display = 'none';
+        }
+
+        document.getElementById('userName').value = loggedInUser.name;
+        document.getElementById('userPhone').value = loggedInUser.phone;
+
+        renderUserOrders();
+      } else {
+        headerBtn.innerText = "Login / Account";
+        formsWrapper.style.display = 'block';
+        dashWrapper.style.display = 'none';
+        document.getElementById('vipRewardCartBox').style.display = 'none';
+      }
+    }
+
+    function handleRegister() {
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const pass = document.getElementById('regPass').value.trim();
+
+      if (!name || !phone || !pass) {
+        alert("Please fill in all registration fields!");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('scooby_registered_users') || '[]');
+      let existing = users.find(u => u.phone === phone);
+
+      if (existing) {
+        alert("Account with this phone number already exists! Please Login.");
+        switchAuthTab('login');
+        return;
+      }
+
+      const randomNum = Math.floor(100 + Math.random() * 900);
+      const refCode = `SCOOBY-${randomNum}`;
+
+      let newUser = { name, phone, pass, refCode, rewards: 0 };
+      users.push(newUser);
+      localStorage.setItem('scooby_registered_users', JSON.stringify(users));
+
+      loggedInUser = newUser;
+      localStorage.setItem('scooby_active_user', JSON.stringify(loggedInUser));
+
+      initUserSession();
+      toggleAuthModal();
+      alert(`🎉 Account Created! Your Referral Code is: ${refCode}`);
+    }
+
+    function handleLogin() {
+      const phone = document.getElementById('loginPhone').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+
+      if (!phone || !pass) {
+        alert("Please enter phone number and password!");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('scooby_registered_users') || '[]');
+      let user = users.find(u => u.phone === phone && u.pass === pass);
+
+      if (user) {
+        loggedInUser = user;
+        localStorage.setItem('scooby_active_user', JSON.stringify(loggedInUser));
+        initUserSession();
+        toggleAuthModal();
+        alert(`Welcome back, ${user.name}! 🌸`);
+      } else {
+        alert("Invalid Phone Number or Password!");
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('scooby_active_user');
+      loggedInUser = null;
+      initUserSession();
+      toggleAuthModal();
+      updateCartUI();
+    }
+
+    function renderUserOrders() {
+      const ordersBox = document.getElementById('userOrdersList');
+      if (!loggedInUser) return;
+
+      let orders = JSON.parse(localStorage.getItem('scooby_placed_orders') || '[]');
+      let myOrders = orders.filter(o => o.phone === loggedInUser.phone);
+
+      if (myOrders.length === 0) {
+        ordersBox.innerHTML = '<p style="font-size:0.8rem; color:var(--subtext-color);">No order history found.</p>';
+        return;
+      }
+
+      ordersBox.innerHTML = '';
+      myOrders.forEach(o => {
+        let statusClass = o.status === 'Shipped' ? 'status-shipped' : (o.status === 'Delivered' ? 'status-delivered' : 'status-pending');
+        ordersBox.innerHTML += `
+          <div style="background:var(--pink-soft); border:1px solid var(--border-color); padding:8px; border-radius:8px; margin-bottom:6px; font-size:0.78rem;">
+            <strong>${o.orderNum}</strong> (${o.date})<br>
+            <strong>Total:</strong> PKR ${o.total.toFixed(0)} | 
+            <strong>Status:</strong> <span class="status-badge ${statusClass}">${o.status || 'Pending'}</span>
+          </div>
+        `;
+      });
+    }
+
+    function searchOrderStatus() {
+      const query = document.getElementById('trackQueryInput').value.trim().toLowerCase();
+      const resultBox = document.getElementById('trackResultBox');
+
+      if (!query) {
+        alert("Please enter Order ID or Phone number!");
+        return;
+      }
+
+      let orders = JSON.parse(localStorage.getItem('scooby_placed_orders') || '[]');
+      let matched = orders.filter(o => 
+        o.orderNum.toLowerCase().includes(query) || 
+        o.phone.toLowerCase().includes(query)
+      );
+
+      resultBox.style.display = 'block';
+
+      if (matched.length === 0) {
+        resultBox.innerHTML = `<p style="color:red; text-align:center;">❌ No order found matching "${query}". Please check details again.</p>`;
+        return;
+      }
+
+      let content = `<strong>Found ${matched.length} Order(s):</strong><hr style="margin:8px 0; border:none; border-top:1px dashed #ccc;">`;
+      matched.forEach(o => {
+        let statusClass = o.status === 'Shipped' ? 'status-shipped' : (o.status === 'Delivered' ? 'status-delivered' : 'status-pending');
+        let statusEmoji = o.status === 'Shipped' ? '📦 Shipped / Dispatched' : (o.status === 'Delivered' ? '✅ Delivered' : '⏳ Processing Order');
+
+        content += `
+          <div style="margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+            <strong>Order ID:</strong> ${o.orderNum}<br>
+            <strong>Date:</strong> ${o.date}<br>
+            <strong>Customer:</strong> ${o.name}<br>
+            <strong>Total Amount:</strong> PKR ${o.total.toFixed(0)}<br>
+            <strong>Status:</strong> <span class="status-badge ${statusClass}">${statusEmoji}</span>
+          </div>
+        `;
+      });
+
+      resultBox.innerHTML = content;
+    }
+
+    function addToCart(name, price, showAlert = true) {
+      let existingIndex = cart.findIndex(item => item.name === name);
+      if (existingIndex > -1) {
+        cart[existingIndex].qty += 1;
+      } else {
+        cart.push({ name, price: Number(price), qty: 1 });
+      }
+      updateCartUI();
+      if (showAlert) {
+        alert(`"${name}" Cart me add ho gaya hai! 🛍️`);
+      }
+    }
+
+    function buyNow(name, price) {
+      addToCart(name, price, false);
+      document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function applyPromoCode() {
+      const code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
+      const msg = document.getElementById('promoMessage');
+
+      if (code === "SCOOBY10") {
+        discountPercent = 10;
+        msg.style.display = "block";
+        msg.style.color = "#25D366";
+        msg.innerText = "🎉 Promo Code Applied! 10% OFF";
+      } else {
+        discountPercent = 0;
+        msg.style.display = "block";
+        msg.style.color = "red";
+        msg.innerText = "❌ Invalid Promo Code!";
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartItemsList = document.getElementById('cartItemsList');
+      const cartCountBadge = document.getElementById('cartCountBadge');
+      const cartSubtotal = document.getElementById('cartSubtotal');
+      const cartDiscount = document.getElementById('cartDiscount');
+      const discountRow = document.getElementById('discountRow');
+      const vipRewardRow = document.getElementById('vipRewardRow');
+      const vipRewardAmount = document.getElementById('vipRewardAmount');
+      const cartTotalPrice = document.getElementById('cartTotalPrice');
+      const useVipBonusCheck = document.getElementById('useVipBonusCheck');
+
+      let totalItems = 0;
+      let subtotal = 0;
+
+      cartItemsList.innerHTML = '';
+
+      if (cart.length === 0) {
+        cartItemsList.innerHTML = '<p style="text-align:center; color:var(--subtext-color); margin-top:20px;">Aapki cart khali hai 🌸</p>';
+      } else {
+        cart.forEach((item, index) => {
+          totalItems += item.qty;
+          subtotal += item.price * item.qty;
+
+          cartItemsList.innerHTML += `
+            <div class="cart-item">
+              <div class="cart-item-info">
+                <h5>${item.name}</h5>
+                <p>PKR ${item.price} x ${item.qty}</p>
+              </div>
+              <div>
+                <button class="cart-qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                <span style="margin: 0 5px; font-weight:bold;">${item.qty}</span>
+                <button class="cart-qty-btn" onclick="changeQty(${index}, 1)">+</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      let discountAmount = (subtotal * discountPercent) / 100;
+      let rewardToUse = (useVipBonusCheck && useVipBonusCheck.checked && loggedInUser && loggedInUser.rewards > 0 && subtotal > 0) ? loggedInUser.rewards : 0;
+
+      let finalPrice = subtotal - discountAmount - rewardToUse;
+      if (finalPrice < 0) finalPrice = 0;
+
+      if (discountPercent > 0 && subtotal > 0) {
+        discountRow.style.display = "flex";
+        cartDiscount.innerText = `-PKR ${discountAmount.toFixed(0)}`;
+      } else {
+        discountRow.style.display = "none";
+      }
+
+      if (rewardToUse > 0) {
+        vipRewardRow.style.display = "flex";
+        vipRewardAmount.innerText = `-PKR ${rewardToUse}`;
+      } else {
+        vipRewardRow.style.display = "none";
+      }
+
+      cartCountBadge.innerText = totalItems;
+      cartSubtotal.innerText = `PKR ${subtotal}`;
+      cartTotalPrice.innerText = `PKR ${finalPrice.toFixed(0)}`;
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      updateCartUI();
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById('cartModal');
+      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // SUBMIT ORDER DIRECTLY ON WEBSITE
+    function submitOrderOnWebsite() {
+      const name = document.getElementById('userName').value.trim();
+      const phone = document.getElementById('userPhone').value.trim();
+      const address = document.getElementById('userAddress').value.trim();
+      const appliedRefCode = document.getElementById('appliedRefCode').value.trim();
+      const useVipBonusCheck = document.getElementById('useVipBonusCheck');
+
+      if (cart.length === 0) {
+        alert("Please add at least one item or scoop to cart first!");
+        return;
+      }
+      if (!name || !phone || !address) {
+        alert("Please fill in all delivery details (Name, Phone, Address)!");
+        return;
+      }
+
+      let orderNum = "SCOOBY-ORD-" + Math.floor(1000 + Math.random() * 9000);
+      let subtotal = 0;
+      let itemsListText = "";
+
+      cart.forEach((item) => {
+        let itemTotal = item.price * item.qty;
+        subtotal += itemTotal;
+        itemsListText += `• ${item.name} (x${item.qty}) - PKR ${itemTotal}<br>`;
+      });
+
+      let discountAmount = (subtotal * discountPercent) / 100;
+      let rewardToUse = (useVipBonusCheck && useVipBonusCheck.checked && loggedInUser && loggedInUser.rewards > 0) ? loggedInUser.rewards : 0;
+      let finalTotal = subtotal - discountAmount - rewardToUse;
+      if (finalTotal < 0) finalTotal = 0;
+
+      // Save order to LocalStorage for Owner Panel & Tracking
+      let placedOrders = JSON.parse(localStorage.getItem('scooby_placed_orders') || '[]');
+      placedOrders.push({
+        orderNum, name, phone, address, appliedRefCode,
+        items: cart, total: finalTotal, status: 'Pending',
+        date: new Date().toLocaleDateString()
+      });
+      localStorage.setItem('scooby_placed_orders', JSON.stringify(placedOrders));
+
+      // Show Success Modal Receipt
+      const detailsBox = document.getElementById('orderSuccessDetails');
+      detailsBox.innerHTML = `
+        <strong>Order ID:</strong> ${orderNum}<br>
+        <strong>Customer Name:</strong> ${name}<br>
+        <strong>Phone:</strong> ${phone}<br>
+        <strong>Address:</strong> ${address}<br>
+        <strong>Status:</strong> <span class="status-badge status-pending">⏳ Processing Order</span><br>
+        <hr style="margin: 8px 0; border: none; border-top: 1px dashed #ccc;">
+        <strong>Items Purchased:</strong><br>${itemsListText}
+        <hr style="margin: 8px 0; border: none; border-top: 1px dashed #ccc;">
+        <strong style="color: var(--pink-dark); font-size: 1rem;">Total Amount (COD): PKR ${finalTotal.toFixed(0)}</strong>
+      `;
+
+      document.getElementById('orderSuccessModal').style.display = 'flex';
+
+      // Reset Cart & Form
+      cart = [];
+      updateCartUI();
+      if (loggedInUser) renderUserOrders();
+      document.getElementById('userAddress').value = '';
+      document.getElementById('appliedRefCode').value = '';
+    }
+
+    function closeOrderSuccessModal() {
+      document.getElementById('orderSuccessModal').style.display = 'none';
+    }
+
+    function sendCartToWhatsApp() {
+      const name = document.getElementById('userName').value.trim();
+      const phone = document.getElementById('userPhone').value.trim();
+      const address = document.getElementById('userAddress').value.trim();
+      const appliedRefCode = document.getElementById('appliedRefCode').value.trim();
+      const useVipBonusCheck = document.getElementById('useVipBonusCheck');
+
+      if (cart.length === 0) {
+        alert("Please add at least one item or scoop to cart first!");
+        return;
+      }
+      if (!name || !phone || !address) {
+        alert("Please fill in all your delivery details!");
+        return;
+      }
+
+      let orderSummary = "";
+      let subtotal = 0;
+
+      cart.forEach((item, idx) => {
+        let itemTotal = item.price * item.qty;
+        subtotal += itemTotal;
+        orderSummary += `${idx + 1}. ${item.name} (x${item.qty}) = PKR ${itemTotal}%0A`;
+      });
+
+      let discountAmount = (subtotal * discountPercent) / 100;
+      let rewardToUse = (useVipBonusCheck && useVipBonusCheck.checked && loggedInUser && loggedInUser.rewards > 0) ? loggedInUser.rewards : 0;
+      let finalTotal = subtotal - discountAmount - rewardToUse;
+      if (finalTotal < 0) finalTotal = 0;
+
+      let discountMsg = discountPercent > 0 ? `*🎁 Promo Discount (10%):* -PKR ${discountAmount.toFixed(0)}%0A` : '';
+      let rewardMsg = rewardToUse > 0 ? `*👑 Rewards Redeemed:* -PKR ${rewardToUse}%0A` : '';
+      let refMsg = appliedRefCode ? `*🎟️ Inviter Referral Code Used:* ${appliedRefCode}%0A_(Award $1 PKR 300 to Inviter)_%0A` : '';
+
+      const message = `*NEW ORDER - SCOOBY DOOBY SHOP*%0A%0A` +
+                      `*🛒 ITEMS IN CART:*%0A${orderSummary}%0A` +
+                      `*💵 Subtotal:* PKR ${subtotal}%0A` +
+                      discountMsg +
+                      rewardMsg +
+                      `*💰 GRAND TOTAL:* PKR ${finalTotal.toFixed(0)}%0A%0A` +
+                      refMsg +
+                      `*👤 CUSTOMER DETAILS:*%0A` +
+                      `*Name:* ${name}%0A` +
+                      `*Phone:* ${phone}%0A` +
+                      `*Address:* ${address}%0A%0A` +
+                      `_Sent from Scooby Dooby Shop Website_`;
+
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+      window.open(whatsappURL, '_blank');
+    }
+
+    function openAdmin() {
+      const pass = prompt("Enter Owner Password:");
+      if (pass === adminPass) {
+        document.getElementById('adminModal').style.display = 'flex';
+        renderManageItems();
+        renderPlacedOrders();
+      } else if (pass !== null) {
+        alert("Incorrect Password!");
+      }
+    }
+
+    function closeAdmin() {
+      document.getElementById('adminModal').style.display = 'none';
+    }
+
+    function renderPlacedOrders() {
+      const ordersBox = document.getElementById('placedOrdersList');
+      let orders = JSON.parse(localStorage.getItem('scooby_placed_orders') || '[]');
+
+      if (orders.length === 0) {
+        ordersBox.innerHTML = '<p style="font-size:0.8rem; color:var(--subtext-color);">No website orders received yet.</p>';
+        return;
+      }
+
+      ordersBox.innerHTML = '';
+      orders.forEach((o, index) => {
+        let statusClass = o.status === 'Shipped' ? 'status-shipped' : (o.status === 'Delivered' ? 'status-delivered' : 'status-pending');
+
+        ordersBox.innerHTML += `
+          <div style="background:var(--card-bg); border:1px solid var(--border-color); padding:10px; border-radius:8px; margin-bottom:8px; font-size:0.8rem;">
+            <strong>${o.orderNum}</strong> (${o.date})<br>
+            <strong>Customer:</strong> ${o.name} (${o.phone})<br>
+            <strong>Total:</strong> PKR ${o.total.toFixed(0)} (COD)<br>
+            <strong>Current Status:</strong> <span class="status-badge ${statusClass}">${o.status || 'Pending'}</span><br>
+            
+            <div style="margin-top:6px; display:flex; gap:4px; flex-wrap:wrap;">
+              <button onclick="updateOrderStatus(${index}, 'Pending')" style="background:#ffc107; color:#000; border:none; padding:3px 6px; border-radius:4px; font-size:0.7rem; cursor:pointer;">⏳ Pending</button>
+              <button onclick="updateOrderStatus(${index}, 'Shipped')" style="background:#17a2b8; color:#fff; border:none; padding:3px 6px; border-radius:4px; font-size:0.7rem; cursor:pointer;">📦 Shipped</button>
+              <button onclick="updateOrderStatus(${index}, 'Delivered')" style="background:#28a745; color:#fff; border:none; padding:3px 6px; border-radius:4px; font-size:0.7rem; cursor:pointer;">✅ Delivered</button>
+              <button onclick="deletePlacedOrder(${index})" style="background:red; color:white; border:none; padding:3px 6px; border-radius:4px; font-size:0.7rem; cursor:pointer; margin-left:auto;">🗑️ Delete</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function updateOrderStatus(index, newStatus) {
+      let orders = JSON.parse(localStorage.getItem('scooby_placed_orders') || '[]');
+      orders[index].status = newStatus;
+      localStorage.setItem('scooby_placed_orders', JSON.stringify(orders));
+      renderPlacedOrders();
+      if (loggedInUser) renderUserOrders();
+      alert(`Order ${orders[index].orderNum} status changed to "${newStatus}"!`);
+    }
+
+    function deletePlacedOrder(index) {
+      if (confirm("Delete this order record?")) {
+        let orders = JSON.parse(localStorage.getItem('scooby_placed_orders') || '[]');
+        orders.splice(index, 1);
+        localStorage.setItem('scooby_placed_orders', JSON.stringify(orders));
+        renderPlacedOrders();
+      }
+    }
+
+    // Add Product from Gallery
+    function addNewProductFromFile() {
+      const fileInput = document.getElementById('pImgFile');
+      const name = document.getElementById('pName').value.trim();
+      const oldPrice = document.getElementById('pOldPrice').value.trim();
+      const price = document.getElementById('pPrice').value.trim();
+
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert("Please select an image file from your gallery!");
+        return;
+      }
+      if (!name || !price) {
+        alert("Please enter product name and sale price!");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const base64Image = e.target.result;
+        let storedProducts = JSON.parse(localStorage.getItem('scooby_products') || '[]');
+        storedProducts.push({ img: base64Image, name, oldPrice, price });
+        
+        try {
+          localStorage.setItem('scooby_products', JSON.stringify(storedProducts));
+          alert("Product added successfully! 🎉");
+        } catch (err) {
+          alert("Image size too large! Please choose a smaller photo.");
+        }
+
+        document.getElementById('pImgFile').value = '';
+        document.getElementById('pName').value = '';
+        document.getElementById('pOldPrice').value = '';
+        document.getElementById('pPrice').value = '';
+
+        loadProducts();
+        renderManageItems();
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+
+    // Add Special Deal from Gallery
+    function addNewDealFromFile() {
+      const title = document.getElementById('dTitle').value.trim();
+      const desc = document.getElementById('dDesc').value.trim();
+      const oldPrice = document.getElementById('dOldPrice').value.trim();
+      const price = document.getElementById('dPrice').value.trim();
+      const fileInput = document.getElementById('dImgFile');
+
+      if (!title || !desc || !price) {
+        alert("Please fill all deal details!");
+        return;
+      }
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          saveDeal(title, desc, oldPrice, price, e.target.result);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        saveDeal(title, desc, oldPrice, price, 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=500&q=80');
+      }
+    }
+
+    function saveDeal(title, desc, oldPrice, price, img) {
+      let storedDeals = JSON.parse(localStorage.getItem('scooby_deals') || '[]');
+      storedDeals.push({ title, desc, oldPrice, price, img });
+      
+      try {
+        localStorage.setItem('scooby_deals', JSON.stringify(storedDeals));
+        alert("Hot Deal added successfully! 🎉");
+      } catch (err) {
+        alert("Image size too large! Please choose a smaller photo.");
+      }
+
+      document.getElementById('dTitle').value = '';
+      document.getElementById('dDesc').value = '';
+      document.getElementById('dOldPrice').value = '';
+      document.getElementById('dPrice').value = '';
+      document.getElementById('dImgFile').value = '';
+
+      loadDeals();
+      renderManageItems();
+    }
+
+    // EDIT / DELETE FUNCTIONS FOR PRODUCTS & DEALS
+    function renderManageItems() {
+      const manageBox = document.getElementById('manageItemsList');
+      let products = JSON.parse(localStorage.getItem('scooby_products') || '[]');
+      let deals = JSON.parse(localStorage.getItem('scooby_deals') || '[]');
+
+      if (products.length === 0 && deals.length === 0) {
+        manageBox.innerHTML = '<p style="font-size:0.8rem; color:var(--subtext-color);">No uploaded items found yet.</p>';
+        return;
+      }
+
+      manageBox.innerHTML = '';
+
+      products.forEach((p, index) => {
+        manageBox.innerHTML += `
+          <div class="manage-item-row">
+            <span>📦 ${p.name} (PKR ${p.price})</span>
+            <div class="manage-btn-group">
+              <button class="manage-btn" style="background:#ff6b95;" onclick="editProduct(${index})">✏️ Edit</button>
+              <button class="manage-btn" style="background:#d81b60;" onclick="deleteProduct(${index})">🗑️ Delete</button>
+            </div>
+          </div>
+        `;
+      });
+
+      deals.forEach((d, index) => {
+        manageBox.innerHTML += `
+          <div class="manage-item-row">
+            <span>🔥 ${d.title} (PKR ${d.price})</span>
+            <div class="manage-btn-group">
+              <button class="manage-btn" style="background:#ff6b95;" onclick="editDeal(${index})">✏️ Edit</button>
+              <button class="manage-btn" style="background:#d81b60;" onclick="deleteDeal(${index})">🗑️ Delete</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function editProduct(index) {
+      let products = JSON.parse(localStorage.getItem('scooby_products') || '[]');
+      let item = products[index];
+
+      let newName = prompt("Edit Product Name:", item.name);
+      let newOldPrice = prompt("Edit Original Cut Price (PKR):", item.oldPrice || '');
+      let newPrice = prompt("Edit Sale Price (PKR):", item.price);
+
+      if (newName && newPrice) {
+        products[index].name = newName.trim();
+        products[index].oldPrice = newOldPrice.trim();
+        products[index].price = newPrice.trim();
+        localStorage.setItem('scooby_products', JSON.stringify(products));
+        loadProducts();
+        renderManageItems();
+        alert("Product updated successfully!");
+      }
+    }
+
+    function deleteProduct(index) {
+      if (confirm("Are you sure you want to delete this product?")) {
+        let products = JSON.parse(localStorage.getItem('scooby_products') || '[]');
+        products.splice(index, 1);
+        localStorage.setItem('scooby_products', JSON.stringify(products));
+        loadProducts();
+        renderManageItems();
+      }
+    }
+
+    function editDeal(index) {
+      let deals = JSON.parse(localStorage.getItem('scooby_deals') || '[]');
+      let item = deals[index];
+
+      let newTitle = prompt("Edit Deal Title:", item.title);
+      let newDesc = prompt("Edit Description:", item.desc);
+      let newPrice = prompt("Edit Sale Price (PKR):", item.price);
+
+      if (newTitle && newPrice) {
+        deals[index].title = newTitle.trim();
+        deals[index].desc = newDesc ? newDesc.trim() : item.desc;
+        deals[index].price = newPrice.trim();
+        localStorage.setItem('scooby_deals', JSON.stringify(deals));
+        loadDeals();
+        renderManageItems();
+        alert("Deal updated successfully!");
+      }
+    }
+
+    function deleteDeal(index) {
+      if (confirm("Are you sure you want to delete this deal?")) {
+        let deals = JSON.parse(localStorage.getItem('scooby_deals') || '[]');
+        deals.splice(index, 1);
+        localStorage.setItem('scooby_deals', JSON.stringify(deals));
+        loadDeals();
+        renderManageItems();
+      }
+    }
+
+    function loadProducts() {
+      let storedProducts = JSON.parse(localStorage.getItem('scooby_products') || '[]');
+      const container = document.getElementById('products-container');
+      const wrapper = document.getElementById('custom-products-wrapper');
+
+      if (storedProducts.length > 0) {
+        wrapper.style.display = 'block';
+        container.innerHTML = '';
+        storedProducts.forEach(p => {
+          let oldPriceHTML = p.oldPrice ? `<span class="old-price">PKR ${p.oldPrice}</span>` : '';
+          let discountBadgeHTML = '';
+          
+          if (p.oldPrice && Number(p.oldPrice) > Number(p.price)) {
+            let percentOff = Math.round(((Number(p.oldPrice) - Number(p.price)) / Number(p.oldPrice)) * 100);
+            discountBadgeHTML = `<span class="discount-badge">${percentOff}% OFF</span>`;
+          }
+
+          container.innerHTML += `
+            <div class="product-card">
+              ${discountBadgeHTML}
+              <img src="${p.img}" alt="${p.name}">
+              <div class="product-card-body">
+                <h4 style="color: var(--text-color); margin-bottom: 5px;">${p.name}</h4>
+                <div class="price-box">
+                  ${oldPriceHTML}
+                  <span class="sale-price">PKR ${p.price}</span>
+                </div>
+                <div class="action-btn-group">
+                  <button class="btn btn-buy-now" onclick="buyNow('${p.name}', ${p.price})">⚡ Buy Now</button>
+                  <button class="btn" onclick="addToCart('${p.name}', ${p.price})">🛒 Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      } else {
+        wrapper.style.display = 'none';
+      }
+    }
+
+    function loadDeals() {
+      let storedDeals = JSON.parse(localStorage.getItem('scooby_deals') || '[]');
+      const container = document.getElementById('deals-container');
+      const wrapper = document.getElementById('deals-wrapper');
+
+      if (storedDeals.length > 0) {
+        wrapper.style.display = 'block';
+        container.innerHTML = '';
+        storedDeals.forEach(d => {
+          let oldPriceHTML = d.oldPrice ? `<span class="old-price" style="font-size:1rem; margin-right:5px;">PKR ${d.oldPrice}</span>` : '';
+
+          container.innerHTML += `
+            <div class="deal-card">
+              <span class="deal-badge-tag">LIMITED OFFER</span>
+              <img src="${d.img}" alt="${d.title}">
+              <div class="deal-body">
+                <h4>${d.title}</h4>
+                <p>${d.desc}</p>
+                <div class="price-box">
+                  ${oldPriceHTML}
+                  <span class="sale-price" style="font-size: 1.3rem;">PKR ${d.price}</span>
+                </div>
+                <div class="action-btn-group">
+                  <button class="btn btn-buy-now" onclick="buyNow('${d.title}', ${d.price})">⚡ Buy Now</button>
+                  <button class="btn" onclick="addToCart('${d.title}', ${d.price})">🛒 Grab Deal</button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      } else {
+        wrapper.style.display = 'none';
+      }
+    }
+
+    initTheme();
+    initUserSession();
+    loadProducts();
+    loadDeals();
+
+    function toggleChat() {
+      const box = document.getElementById('ai-chat-box');
+      box.style.display = box.style.display === 'none' || box.style.display === '' ? 'flex' : 'none';
+    }
+
+    function askAI() {
+      const input = document.getElementById('chat-input');
+      const msg = input.value.trim().toLowerCase();
+      if (!msg) return;
+
+      const messages = document.getElementById('chat-messages');
+
+      const userDiv = document.createElement('div');
+      userDiv.style.cssText = "background: #ff6b95; color: white; padding: 8px 12px; border-radius: 12px; align-self: flex-end; max-width: 85%; word-break: break-word;";
+      userDiv.innerText = input.value;
+      messages.appendChild(userDiv);
+
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+
+      setTimeout(() => {
+        let botReply = "Aap humare WhatsApp par direct message karke bhi poori detail le sakti hain! 🌸";
+
+        if (msg.includes("deal") || msg.includes("offer") || msg.includes("bundle")) {
+          botReply = "Humare paas Special Hot Deals mojood hain! Aap unhe website par top section me dekh kar Cart me add kar sakti hain.";
+        } else if (msg.includes("track") || msg.includes("status") || msg.includes("order")) {
+          botReply = "Aap top bar me '🚚 Track Order' button par click karke apna Order ID ya Phone number daal kar live status dekh sakti hain!";
+        } else if (msg.includes("referral") || msg.includes("code") || msg.includes("invite") || msg.includes("reward") || msg.includes("1$")) {
+          botReply = "Aap 'Login / Account' button par account bana kar apna Referral Code le sakti hain. Jab aapka friend order karega, aapko PKR 300 reward milega!";
+        } else if (msg.includes("price") || msg.includes("rate") || msg.includes("kitne")) {
+          botReply = "Humare scoops PKR 499 se shuru hotay hain. Aap single items bhi khareed sakti hain!";
+        } else if (msg.includes("delivery") || msg.includes("ship")) {
+          botReply = "Hum poore Pakistan me Cash on Delivery (COD) bhejte hain! Delivery 3-5 working days me ho jati hai.";
+        }
+
+        const botDiv = document.createElement('div');
+        botDiv.style.cssText = "background: var(--pink-soft); color: var(--text-color); padding: 8px 12px; border-radius: 12px; align-self: flex-start; max-width: 85%; word-break: break-word;";
+        botDiv.innerText = botReply;
+        messages.appendChild(botDiv);
+        messages.scrollTop = messages.scrollHeight;
+      }, 400);
+    }
+
+    document.getElementById('chat-input').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        askAI();
+      }
+    });
+  </script>
+
+</body>
+</html>
